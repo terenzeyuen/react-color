@@ -5,12 +5,6 @@ var ReactCSS = require('reactcss');
 
 class SketchPresetColors extends ReactCSS.Component {
 
-  constructor() {
-    super();
-
-    this.handleClick = this.handleClick.bind(this);
-  }
-
   classes() {
     return {
       'default': {
@@ -51,16 +45,12 @@ class SketchPresetColors extends ReactCSS.Component {
     });
   }
 
-  handleClick(hex) {
-    this.props.onClick(hex);
-  }
-
   render() {
     var colors = [];
     if (this.props.colors) {
       for (var i = 0; i < this.props.colors.length; i++) {
         var color = this.props.colors[i];
-        colors.push(<div key={ color } is="li" onClick={ this.handleClick.bind(null, color) }><div style={{ background: color}} > <div is="square" /> </div></div>);
+        colors.push(<div key={ color } is="li" onClick={ this.props.onClick.bind(null, color) }><div style={{ background: color}} > <div is="square" /> </div></div>);
       }
     }
 
