@@ -17,8 +17,6 @@ class EditableInput extends ReactCSS.Component {
     this.handleDrag = this.handleDrag.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.handleMouseUp = this.handleMouseUp.bind(this);
   }
 
   classes() {
@@ -107,6 +105,7 @@ class EditableInput extends ReactCSS.Component {
 
   handleDrag(e) {
     if (this.props.dragLabel) {
+      e.preventDefault();
       var newValue = Math.round(this.props.value + e.movementX);
       if (newValue >= 0 && newValue <= this.props.dragMax) {
         var obj = {};
@@ -116,24 +115,11 @@ class EditableInput extends ReactCSS.Component {
     }
   }
 
-  handleMouseDown(e) {
-    if (this.props.dragLabel) {
-      e.preventDefault();
-      this.handleDrag(e);
-      window.addEventListener('mousemove', this.handleDrag);
-      window.addEventListener('mouseup', this.handleMouseUp);
-    }
-  }
-
-  handleMouseUp() {
-    window.removeEventListener('mousemove', this.handleDrag);
-    window.removeEventListener('mouseup', this.handleMouseUp);
-  }
 
   render() {
     var label;
     if (this.props.label) {
-      label = <span is="label" ref="label" onMouseDown={ this.handleMouseDown }>{ this.props.label }</span>;
+      label = <span is="label" ref="label" onMouseMove={ this.handleDrag }>{ this.props.label }</span>;
     }
 
     return (
