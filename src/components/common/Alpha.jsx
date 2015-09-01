@@ -9,10 +9,7 @@ class Alpha extends ReactCSS.Component {
 
   constructor() {
     super();
-
     this.handleChange = this.handleChange.bind(this);
-    this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.handleMouseUp = this.handleMouseUp.bind(this);
   }
 
   classes() {
@@ -56,8 +53,7 @@ class Alpha extends ReactCSS.Component {
     };
   }
 
-  handleChange(e, skip) {
-    !skip && e.preventDefault();
+  handleChange(e) {
     var container = React.findDOMNode(this.refs.container);
     var containerWidth = container.clientWidth;
     var left = e.pageX - (container.getBoundingClientRect().left + window.pageXOffset);
@@ -76,17 +72,6 @@ class Alpha extends ReactCSS.Component {
     }
   }
 
-  handleMouseDown(e) {
-    this.handleChange(e, true);
-    window.addEventListener('mousemove', this.handleChange);
-    window.addEventListener('mouseup', this.handleMouseUp);
-  }
-
-  handleMouseUp() {
-    window.removeEventListener('mousemove', this.handleChange);
-    window.removeEventListener('mouseup', this.handleMouseUp);
-  }
-
   render() {
     var pointer = <div is="slider" />;
 
@@ -100,7 +85,7 @@ class Alpha extends ReactCSS.Component {
           <Checkboard />
         </div>
         <div is="gradient" />
-        <div is="container" ref="container" onMouseDown={ this.handleMouseDown }>
+        <div is="container" ref="container" onMouseDown={ this.handleChange }>
           <div is="pointer" ref="pointer">
             { pointer }
           </div>
