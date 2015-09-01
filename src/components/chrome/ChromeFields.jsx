@@ -15,7 +15,6 @@ class ChromeFields extends ReactCSS.Component {
       view: '',
     };
 
-    this.handleChange = this.handleChange.bind(this);
     this.toggleViews = this.toggleViews.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.hideHighlight = this.hideHighlight.bind(this);
@@ -85,10 +84,6 @@ class ChromeFields extends ReactCSS.Component {
         },
       },
     };
-  }
-
-  handleChange(data) {
-    this.props.onChange(data);
   }
 
   componentDidMount() {
