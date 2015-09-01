@@ -7,10 +7,7 @@ class Hue extends ReactCSS.Component {
 
   constructor() {
     super();
-
     this.handleChange = this.handleChange.bind(this);
-    this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.handleMouseUp = this.handleMouseUp.bind(this);
   }
 
   classes() {
@@ -54,8 +51,7 @@ class Hue extends ReactCSS.Component {
     };
   }
 
-  handleChange(e, skip) {
-    !skip && e.preventDefault();
+  handleChange(e) {
     var container = React.findDOMNode(this.refs.container);
     var containerWidth = container.clientWidth;
     var containerHeight = container.clientHeight;
@@ -93,17 +89,6 @@ class Hue extends ReactCSS.Component {
     }
   }
 
-  handleMouseDown(e) {
-    this.handleChange(e, true);
-    window.addEventListener('mousemove', this.handleChange);
-    window.addEventListener('mouseup', this.handleMouseUp);
-  }
-
-  handleMouseUp() {
-    window.removeEventListener('mousemove', this.handleChange);
-    window.removeEventListener('mouseup', this.handleMouseUp);
-  }
-
   render() {
     var pointer = <div is="slider" />;
 
@@ -113,7 +98,7 @@ class Hue extends ReactCSS.Component {
 
     return (
       <div is="hue">
-        <div is="container" ref="container" onMouseDown={ this.handleMouseDown }>
+        <div is="container" ref="container" onMouseMove={ this.handleChange }>
           <div is="pointer" ref="pointer">
             { pointer }
           </div>
