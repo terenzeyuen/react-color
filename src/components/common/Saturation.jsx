@@ -2,20 +2,18 @@
 
 var React = require('react');
 var ReactCSS = require('reactcss');
-var _ = require('lodash');
+var throttle = require('lodash.throttle');
 
 class Saturation extends ReactCSS.Component {
 
   constructor(props) {
     super();
 
-    this.throttle = _.throttle(function(fn, data) {
+    this.throttle = throttle(function(fn, data) {
       fn(data);
     }, 50);
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.handleMouseUp = this.handleMouseUp.bind(this);
   }
 
   classes() {
@@ -54,7 +52,7 @@ class Saturation extends ReactCSS.Component {
   }
 
   handleChange(e, skip) {
-    !skip && e.preventDefault();
+    e.preventDefault();
     var container = React.findDOMNode(this.refs.container);
     var containerWidth = container.clientWidth;
     var containerHeight = container.clientHeight;
@@ -77,17 +75,6 @@ class Saturation extends ReactCSS.Component {
     this.throttle(this.props.onChange, { h: this.props.hsl.h, s: saturation, v: bright, a: this.props.hsl.a });
   }
 
-  handleMouseDown(e) {
-    this.handleChange(e, true);
-    window.addEventListener('mousemove', this.handleChange);
-    window.addEventListener('mouseup', this.handleMouseUp);
-  }
-
-  handleMouseUp() {
-    window.removeEventListener('mousemove', this.handleChange);
-    window.removeEventListener('mouseup', this.handleMouseUp);
-  }
-
   render() {
     var pointer = <div is="circle" />;
 
@@ -96,7 +83,7 @@ class Saturation extends ReactCSS.Component {
     }
 
     return (
-      <div is="color" ref="container" onMouseDown={ this.handleMouseDown }>
+      <div is="color" ref="container" onMouseMove={ this.handleChange }>
         <div is="white">
           <div is="black" />
           <div is="pointer" ref="pointer">
